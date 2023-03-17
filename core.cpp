@@ -4,6 +4,10 @@ void firstPage(trie *head);
 trie* getNewNode()
 {
     trie* node=new trie;
+    if (node == nullptr) {
+        cout<<"error";
+        throw std::bad_alloc(); // throw an exception if new operator fails
+    }
     node->isLeaf=0;
     for(int i=0;i<ALPHABET_SIZE;i++)
     {
@@ -25,15 +29,15 @@ trie* insert(trie *head,string str)
 {
     //for depth, when giving the user the option to append or insert the depth is to be updated
     depth(str);//to know the depth of the trie
-   
     char c;
+    //if(head==NULL)
     trie* curr=head;//start from the root
-    if(head==NULL)
-    {
-        cout<<"error"<<endl;
+    //if(head==NULL)//first use of head
+    //{
+        //cout<<"error"<<endl;
         //return 0;
-        return NULL;
-    }
+        //return NULL;
+    //}
     try{
     for(int i=0;i<str.length();i++)
     {
@@ -69,6 +73,7 @@ trie* search(trie *head,string str)
 {
     if(head==NULL)
     {
+        cout<<"empty trie"<<endl;
         return NULL;
     }
     trie *curr=head;
@@ -97,24 +102,24 @@ void read_from_file(trie *head)
     if(!myfile.is_open())
     {
         cout<<"error while reading"<<endl;
-        return;
+        exit(0);
     }
     
     if(myfile.is_open())
     {
     while(getline(myfile,line))
     {
-        try{
+        //try{
         istringstream iline(line);//reads the line in a inputstream iline which is created using istringstream
         getline(iline, Word,'-');//reads the line until and - is encountered and stores the string in Word
         t=insert_from_file(head,Word);//used to insert the word in trie data structure
         t->word=Word;//we insert to the returned node's(which is the last character's node) word the Word to be stored
         getline(iline,Meaning,'\n');//all th other line in the iline till newline is encountered is placed in Meaning
         t->meaning=Meaning;//we store Meaning to t(node)->meaning 
-    }catch(MemoryAllocationError& e)
-    {
-        cout<<"error:"<<e.what()<<endl;
-    }
+    }//catch(MemoryAllocationError& e)
+    //{
+       // cout<<"error:"<<e.what()<<endl;
+    //}
     
     }
     
@@ -124,7 +129,7 @@ void read_from_file(trie *head)
     }*/
     
    
-    }
+    //}
     myfile.close();
 }
 void getPrefixHelp(trie *node,string str,vector<string>& result_word,vector<string>& result_meaning)//recursion is used to

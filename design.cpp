@@ -1,6 +1,6 @@
 #include"Node.h"
-//trie* getNewNode();
-//trie* insert(trie *head,string str);
+trie* getNewNode();
+trie* insert(trie *head,string str);
 trie* search(trie *head,string str);
 void getPrefixHelp(trie *node,string str,vector<string>& result_word,vector<string>& result_meaning);
 void adding_to_file(string word,string meaning,string pos1);
@@ -38,7 +38,7 @@ void searchPrefix(trie *head)
     }
     cout<<endl<<endl;
     cout<<"?\t\t\t\t?:new key  |  b:main page"<<endl;
-    cin>>choice;
+    /*cin>>choice;
     if(choice=='?')
     {
         searchPrefix(head);//use this function unless user tells to go to main page
@@ -46,7 +46,7 @@ void searchPrefix(trie *head)
     else if(choice=='b')
     {
         return;
-    }
+    }*/
 }
 void searchWord(trie *head)//getprefix does the work for all, it is a superset
 {
@@ -74,7 +74,7 @@ void searchWord(trie *head)//getprefix does the work for all, it is a superset
     cout<<key->word<<"\t\t"<<key->meaning<<endl;
     cout<<endl<<endl;
     cout<<"?\b\b\b\b?:new key  |  b:main page"<<endl;
-    cin>>choice;
+    /*cin>>choice;
     if(choice=='?')
     {
         searchPrefix(head);
@@ -82,11 +82,12 @@ void searchWord(trie *head)//getprefix does the work for all, it is a superset
     else if(choice=='b')
     {
         return;
-    }
+    }*/
 
 }
-void insertDesign()
+void insertDesign(trie *head)
 {
+    trie *t=getNewNode();
     system("cls");
     string word,meaning,pos1;
     char choice;
@@ -107,9 +108,12 @@ void insertDesign()
     cout<<"######################"<<endl<<endl;
     cin>>pos1;
     adding_to_file(word,meaning,pos1);//this is void
+    t=insert(head,word);
+    t->word=word;
+    t->meaning=meaning;
     cout<<endl;
     cout<<"?\b\b\b\b?:new key  |  b:main page"<<endl;
-    cin>>choice;
+    /*cin>>choice;
     if(choice=='?')
     {
         insertDesign();
@@ -117,7 +121,7 @@ void insertDesign()
     else if(choice=='b')
     {
         return;
-    }
+    }*/
 }
 char coverPage()
 {
@@ -147,7 +151,7 @@ char coverPage()
 }
 void firstPage(trie *head)
 {
-    char userInput;
+    char userInput,choice;
     userInput=coverPage();//for the first time, not keeping in loop
     //while(1){
     /*do{
@@ -182,12 +186,40 @@ void firstPage(trie *head)
        
             system("cls");
             searchPrefix(head);
+            cin>>choice;
+            while(choice!='b')
+            {
+                if(choice=='?')
+                {
+                    searchPrefix(head);
+                }
+                else
+                {
+                    cout<<"invalid option,enter again:"<<endl;
+                    cin>>choice;
+                }
+               
+            }
             break;
         }
         case 'i':
         {
             system("cls");
-            insertDesign();
+            insertDesign(head);
+            cin>>choice;
+            while(choice!='b')
+            {
+                if(choice=='?')
+                {
+                    insertDesign(head);
+                }
+                else
+                {
+                    cout<<"invalid option,enter again:"<<endl;
+                    cin>>choice;
+                }
+               
+            }
             break;
 
 
@@ -196,6 +228,20 @@ void firstPage(trie *head)
         {
             system("cls");
             searchWord(head);
+            cin>>choice;
+            while(choice!='b')
+            {
+                if(choice=='?')
+                {
+                    searchWord(head);
+                }
+                else
+                {
+                    cout<<"invalid option,enter again:"<<endl;
+                    cin>>choice;
+                }
+               
+            }
             break;
         }
         //case 'e':
@@ -208,6 +254,7 @@ void firstPage(trie *head)
         }
         
     }
+    system("cls");
     userInput=coverPage();//this is called until 'e' exit is pressed
     }//while(userInput!='e');
 
