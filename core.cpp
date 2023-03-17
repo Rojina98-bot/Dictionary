@@ -31,7 +31,8 @@ trie* insert(trie *head,string str)
     if(head==NULL)
     {
         cout<<"error"<<endl;
-        return;
+        //return 0;
+        return NULL;
     }
     try{
     for(int i=0;i<str.length();i++)
@@ -68,7 +69,7 @@ trie* search(trie *head,string str)
 {
     if(head==NULL)
     {
-        return;
+        return NULL;
     }
     trie *curr=head;
     char c;
@@ -79,7 +80,7 @@ trie* search(trie *head,string str)
         curr=curr->children[c-'a'];//until the end of string is not reached, we move in the trie
         if(curr==NULL)//check for exception
         {
-            return;
+            return NULL;
         }
     }
     return curr;//return required node
@@ -153,7 +154,7 @@ void adding_to_file(string word,string meaning,string pos1)
     if(!outfile.is_open())
     {
         cout<<"error to open file"<<endl;
-        exit(0);
+        return;
     }
     outfile<<'\n';//using the format in out txt file
     outfile<<word;

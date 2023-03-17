@@ -12,6 +12,7 @@
 //#include<wchar.h>
 //#include<windows.h>
 #include<iomanip>
+#include<climits>
 #define ALPHABET_SIZE 26
 using namespace std;
 class trie
