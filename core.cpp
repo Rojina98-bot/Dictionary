@@ -31,6 +31,7 @@ trie* insert(trie *head,string str)
     if(head==NULL)
     {
         cout<<"error"<<endl;
+        return;
     }
     try{
     for(int i=0;i<str.length();i++)
@@ -67,7 +68,7 @@ trie* search(trie *head,string str)
 {
     if(head==NULL)
     {
-        return 0;
+        return;
     }
     trie *curr=head;
     char c;
@@ -78,7 +79,7 @@ trie* search(trie *head,string str)
         curr=curr->children[c-'a'];//until the end of string is not reached, we move in the trie
         if(curr==NULL)//check for exception
         {
-            return 0;
+            return;
         }
     }
     return curr;//return required node
@@ -95,7 +96,7 @@ void read_from_file(trie *head)
     if(!myfile.is_open())
     {
         cout<<"error while reading"<<endl;
-        exit(0);
+        return;
     }
     
     if(myfile.is_open())
@@ -115,7 +116,7 @@ void read_from_file(trie *head)
     }
     
     }
-    myfile.close();
+    
     /*}catch(MemoryAllocationError& e)
     {
         cout<<"error:"<<e.what()<<endl;
@@ -123,6 +124,7 @@ void read_from_file(trie *head)
     
    
     }
+    myfile.close();
 }
 void getPrefixHelp(trie *node,string str,vector<string>& result_word,vector<string>& result_meaning)//recursion is used to
 //search for words with all prefix
