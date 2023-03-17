@@ -1,127 +1,146 @@
 #include"Node.h"
-trie* getNewNode();
-trie* insert(trie *head,string str);
-trie* search(trie *head,string str);
-void getPrefixHelp(trie *node,string str,vector<string>& result_word,vector<string>& result_meaning);
-void adding_to_file(string word,string meaning,string pos1);
-void searchPrefix(trie *head)
+pair<vector<string>, vector<string>> searchPrefix(trie *head,string key);
+trie* CreateNode();
+void add_to_file(string word,string meaning,string pos1);
+trie* insert(trie* head,string str);
+trie *search(trie *head,string str);
+void replace(trie *head,string word,string meaning,string pos1);
+bool alreadyThere(string key)//to check whether word already exists or not
+{
+    string line,word;
+    ifstream myfile;
+    myfile.open("real_dictionary.txt");
+    if(!myfile.is_open())//check in case file cannot open
+    {
+        cerr<<"error reading file"<<endl;
+    }
+    if(myfile.is_open())
+    {
+        while(getline(myfile,line))
+        {
+            istringstream iline(line);
+            getline(iline,word,'-');
+            word.pop_back();
+            if(word==key)
+            {
+                return true;
+            }
+        }
+    }
+    myfile.close();
+    return false;
+}
+void preSearch(trie *head)//prefix search
 {
     system("cls");
+    string key;
     vector<string>result_word;
     vector<string>result_meaning;
-    
-    if (head == NULL) {//exception condition
-        cout<<"empty trie"<<endl;
-        return;
-    }
-    trie *t;
-    string key;
-    char choice;
     cout<<"\t\t   ###########################"<<"\t\t ?:new key  |  b:main page"<<endl;
     cout<<"\t\t(  )\tEnter the key"<<endl;
     cout<<"\t\t / ###########################"<<"\t\t\t enter everthing in lower alphabet and no symbols"<<endl;
     cin>>key;
-    t=search(head,key);
-    if(t==NULL)
+    auto twoVecs=searchPrefix(head,key);//returns two vectors containing words with same prefix and their meaning
+    if(twoVecs.first.empty()&&twoVecs.second.empty())
     {
-        cout<<"the prefix does not exist"<<endl;
         return;
     }
-    getPrefixHelp(t,key,result_word,result_meaning);
-    cout<<endl<<endl;
+    result_word=twoVecs.first;
+    result_meaning=twoVecs.second;
     cout<<setw(20)<<"WORD:"<<"\t\t\t"<<"MEANING:"<<endl<<endl;
     for(int i=0;i<result_word.size();i++)
     {
-        
         cout<<setw(20)<<result_word[i]<<"\t\t\t"<<result_meaning[i]<<endl;
 
     }
-    cout<<endl<<endl;
-    cout<<"?\t\t\t\t?:new key  |  b:main page"<<endl;
-    /*cin>>choice;
-    if(choice=='?')
-    {
-        searchPrefix(head);//use this function unless user tells to go to main page
-    }
-    else if(choice=='b')
-    {
-        return;
-    }*/
-}
-void searchWord(trie *head)//getprefix does the work for all, it is a superset
-{
-    system("cls");
-    if (head == NULL) {//exception condition
-        cout<<"empty trie"<<endl;
-        return;
-    }
-    trie *key;
-    string str;
-    char choice;
-    
-    cout<<"\t\t  ###########################"<<"\t\t ?:new key  |  b:main page"<<endl;
-    cout<<"\t\t(  )\tenter the key"<<endl;
-    cout<<"\t\t / ###########################"<<"\t\t\t enter everthing in lower alphabet and no symbols"<<endl;
-    cin>>str;
-    key=search(head,str);
-    if(key==NULL)
-    {
-        cout<<"the word does not exist"<<endl;
-        return;
-    }
     cout<<endl;
-    cout<<"WORD:\t\t MEANING:"<<endl;
-    cout<<key->word<<"\t\t"<<key->meaning<<endl;
-    cout<<endl<<endl;
-    cout<<"?\b\b\b\b?:new key  |  b:main page"<<endl;
-    /*cin>>choice;
-    if(choice=='?')
-    {
-        searchPrefix(head);
-    }
-    else if(choice=='b')
-    {
-        return;
-    }*/
-
+    cout<<endl<<"\t\t ?:new key  |  b:main page"<<endl;
 }
-void insertDesign(trie *head)
+void insertDesign(trie *head)//inserting word
 {
-    trie *t=getNewNode();
+    bool ans;
+    string new_meaning, new_pos;
+    trie *t=CreateNode();
     system("cls");
     string word,meaning,pos1;
-    char choice;
+    char choice,input;
     cout<<"######################"<<"\t\t ?:new key  |  b:main page"<<endl;
     cout<<"\tWORD"<<endl;
     cout<<"######################"<<"\t\t\t enter everthing in lower alphabet and no symbols"<<endl<<endl;
     cin.ignore();
     getline(cin,word);
     cout<<endl<<endl;
+    ans=alreadyThere(word);//check if word exists or not
+    if(ans==true)
+    {
+        cout<<"The word already exists"<<endl;
+        cout<<"pls add a new word or do you want to replace it with differnt meaning and pos"<<endl;
+        cout<<"a:add   | r:replace"<<endl;
+        cin>>input;
+        if(input=='a')//option to add new word
+        {
+            cout<<"?\b\b\b\b?:new key  |  b:main page"<<endl;
+            return;
+            
+        }
+        else if(input=='r')//replace with new meaning and pos
+        {
+            cout<<endl<<"meaning:"<<endl;
+            cin.ignore();
+            getline(cin,new_meaning);
+            cout<<endl<<"part of speech"<<endl;
+            cin>>new_pos;
+            replace(head,word,new_meaning,new_pos);
+            cout<<endl;
+            
+           
+        }
+        else
+        {
+            cout<<"invalid option:";
+            
+
+        }
+        cout<<"?\b\b\b\b?:new key  |  b:main page"<<endl;
+        return;
+    }
     cout<<"######################"<<endl;
     cout<<"\t MEANING"<<endl;
     cout<<"######################"<<endl<<endl;
-    cin.ignore();//to ignore newline in stream
     getline(cin,meaning);
     cout<<endl<<endl;
     cout<<"######################"<<endl;
     cout<<" part of speech "<<endl;
     cout<<"######################"<<endl<<endl;
     cin>>pos1;
-    adding_to_file(word,meaning,pos1);//this is void
-    t=insert(head,word);
+    add_to_file(word,meaning,pos1);// add new word to file
+    t=insert(head,word);//and trie also
     t->word=word;
-    t->meaning=meaning;
+    t->meaning=pos1+"."+" "+meaning;//in specific format
     cout<<endl;
     cout<<"?\b\b\b\b?:new key  |  b:main page"<<endl;
-    /*cin>>choice;
-    if(choice=='?')
-    {
-        insertDesign();
-    }
-    else if(choice=='b')
+
+}
+void searchWord(trie *head)
+{
+    system("cls");
+    trie *t;
+    string str;
+    char choice;
+    cout<<"\t\t  ###########################"<<"\t\t ?:new key  |  b:main page"<<endl;
+    cout<<"\t\t(  )\tenter the key"<<endl;
+    cout<<"\t\t / ###########################"<<"\t\t\t enter everthing in lower alphabet and no symbols"<<endl;
+    cin>>str;
+    t=search(head,str);
+    if(t==NULL)
     {
         return;
-    }*/
+    }
+    cout<<endl;
+    cout<<"WORD:\t\t MEANING:"<<endl;
+    cout<<t->word<<"\t\t"<<t->meaning<<endl;
+    cout<<endl;
+    cout<<"?\b\b\b\b?:new key  |  b:main page"<<endl;
 }
 char coverPage()
 {
@@ -153,29 +172,6 @@ void firstPage(trie *head)
 {
     char userInput,choice;
     userInput=coverPage();//for the first time, not keeping in loop
-    //while(1){
-    /*do{
-    system("cls");
-    cout << "\033[32m"; // Set text color to green
-    cout<<"\t\t\t\t++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"<<endl;
-    cout<<" \t\t\t\t\t\tOXFORD DICTIONARY "<<endl;
-    cout<<"\t\t\t\t+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"<<endl<<endl<<endl<<endl;
-    cout<<"\t\t *********************************************"<<endl;
-    cout<<"\t\t |\t\t's' for search for prefix    |"<<endl;
-    cout<<"\t\t *********************************************"<<endl;
-    cout<<"\t\t *********************************************"<<endl;
-    cout<<"\t\t |\t\t 'i' for insert\t\t     |"<<endl;
-    cout<<"\t\t *********************************************"<<endl;
-    cout<<"\t\t *********************************************"<<endl;
-    cout<<"\t\t |\t\t 'w' for word\t\t     |"<<endl;
-    cout<<"\t\t *********************************************"<<endl;
-    cout<<"\t\t *********************************************"<<endl;
-    cout<<"\t\t |\t\t'e' for exit \t\t     |"<<endl;
-    cout<<"\t\t *********************************************"<<endl<<endl<<endl;
-    cout<<"CHOICE"<<endl;
-    cout<<"||||||||||||||||||||||||||||||"<<endl;
-    cin>>userInput;
-    cout<<"||||||||||||||||||||||||||||||"<<endl;*/
     while(userInput!='e')
     {
     switch(userInput)
@@ -183,24 +179,24 @@ void firstPage(trie *head)
     
         case 's':
         { 
-       
             system("cls");
-            searchPrefix(head);
+            preSearch(head);
             cin>>choice;
             while(choice!='b')
             {
                 if(choice=='?')
                 {
-                    searchPrefix(head);
+                    preSearch(head);
                 }
                 else
                 {
                     cout<<"invalid option,enter again:"<<endl;
-                    cin>>choice;
                 }
+                cin>>choice;
                
             }
             break;
+
         }
         case 'i':
         {
@@ -216,8 +212,8 @@ void firstPage(trie *head)
                 else
                 {
                     cout<<"invalid option,enter again:"<<endl;
-                    cin>>choice;
                 }
+                cin>>choice;
                
             }
             break;
@@ -238,14 +234,12 @@ void firstPage(trie *head)
                 else
                 {
                     cout<<"invalid option,enter again:"<<endl;
-                    cin>>choice;
                 }
+                cin>>choice;
                
             }
             break;
         }
-        //case 'e':
-        //exit(0);
 
         default:
         {
@@ -254,9 +248,8 @@ void firstPage(trie *head)
         }
         
     }
-    system("cls");
     userInput=coverPage();//this is called until 'e' exit is pressed
-    }//while(userInput!='e');
+    }
 
 
 }
