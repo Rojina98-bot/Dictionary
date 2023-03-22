@@ -15,12 +15,9 @@ administration - n. the executive part of a government, usually headed by a pres
 admit - v. to accept (“admitted to the United Nations”); to express one’s guilt or responsibility 
 adult - n. a grown person
 advertise - v. to show or present the qualities of a product to increase sales
-affect - v. to produce an effect on; to influence 
-afraid - ad. feeling fear
 after - ad. later; behind
 again - ad. another time; as before
 against - ad. opposed to; not agreeing with something
-age - n. how old a person or thing is
 agency - n. an organization that is part of a larger group(“an agency of the United Nations”)
 aggression - n. an attack against a person or country; the violation of a country’s borders
 ago - ad. of time past; before now
@@ -1128,10 +1125,18 @@ worry - v. to be concerned; to continue thinking that something, possibly bad, c
 worse - ad. more bad than
 worth - n. value measured in money
 wound - v. to injure; to hurt; to cause physical damage to a
-x-ray - n. a kind of radiation that can pass through most solid material, often used in medicine
+x ray - n. a kind of radiation that can pass through most solid material, often used in medicine
 year - n. a period of time equal to twelve months
 yellow - ad. having the color like that of gold or the sun
 yes - ad. used to express agreement or to permit
 zero - n. the number meaning none or nothing
 zoo - n. a place where animals are kept for the public to look at and study
-euphoria - n. he state of exhiliration or excitement
+avant garde - n. new and experimental ideas in art, music and literature
+afraid - ad. feeling fear
+age - n. how old a person or thing is
+bewilderment - n. the feeling of being perplexed or confused
+cherish - v. protect or care for lovingly
+affect - v. to produce an effect on; to influence
+draft - n. a written order to pay a specified sum
+tumour - n. a swelling of any kind
+cliche - n. a stereotype or electrotype
