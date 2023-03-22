@@ -58,6 +58,33 @@ trie *search(trie *head,string str)
     return curr;
 
 }
+string random(trie *head)
+{
+    trie *curr=head;
+    string word;
+    while(!curr->isLeaf)
+    {
+        vector<int>indices;
+        for(int i=0;i<ALPHABET_SIZE;i++)
+        {
+            if(curr->children[i])
+            {
+                indices.push_back(i);
+            }
+        }
+        int num=indices.size();
+        if(num==0)
+        {
+            break;
+        }
+        srand(time(nullptr));
+        int randomNumber=rand()%num;
+        char c='a'+indices[randomNumber];
+        word.push_back(c);
+        curr=curr->children[c-'a'];
+    }
+    return word;
+}
 void getPrefixHelp(trie *t,string key,vector<string>& result_word,vector<string>& result_meaning)
 {
     if(t->isLeaf)
@@ -176,6 +203,82 @@ void replace(trie *head,string word,string meaning,string pos1)//replace old mea
     add_to_file(word,meaning,pos1);//then adding new values
     
 }
+int levenshteinDistance(string word1, string word2) {
+    int m = word1.length();
+    int n = word2.length();
+    int** dp = new int*[m+1];
+    for (int i = 0; i <= m; i++) {
+        dp[i] = new int[n+1];
+    }
+
+    for (int i = 0; i <= m; i++) {//i is the row of the matrix  
+        for (int j = 0; j <= n; j++) {
+            if (i == 0) {
+                dp[i][j] = j;
+            } else if (j == 0) {
+                dp[i][j] = i;
+            } else if (word1[i-1] == word2[j-1]) {
+                dp[i][j] = dp[i-1][j-1];
+            } else {
+                dp[i][j] = 1 + min(dp[i-1][j-1], min(dp[i-1][j], dp[i][j-1]));
+            }
+        }
+    }
+    
+    int distance = dp[m][n];
+
+    for (int i = 0; i <= m; i++) {
+        delete[] dp[i];
+    }
+    delete[] dp;
+
+    return distance;
+}
+void dfs(trie* node, vector<string>& words, string word) {
+    if (node->isLeaf) {
+        words.push_back(word);
+    }
+    for (int i = 0; i < ALPHABET_SIZE; i++) {
+        if (node->children[i] != nullptr) {
+            char c = 'a' + i;
+            dfs(node->children[i], words, word + c);
+        }
+    }
+}
+
+vector<string> getAllWords(trie* root) {
+    vector<string> words;
+    dfs(root, words, "");
+    return words;
+}
+bool levenshtein(trie *head,string key)
+{
+    vector<string> same;
+    vector<string> words=getAllWords(head);
+    for(int i=0;i<words.size();i++)
+    {
+        int distance=levenshteinDistance(words[i],key);
+        if(distance<=2)
+        {
+            same.push_back(words[i]);
+        }
+    
+    }
+    cout<<"\t\tPOSSIBLE WORDS"<<endl;
+    if(same.size()==0)
+    {
+        cout<<"\t\t no such word exist"<<endl;
+        return false;
+    }
+    cout<<"\t\t^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"<<endl;
+    for(int i=0;i<same.size();i++)
+    {
+        cout<<"\t\t|\t"<<same[i]<<"\t\t\t\t      |"<<endl;
+        
+    }
+    cout<<"\t\t^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"<<endl;
+    return true;
+}
 void deleteTrie(trie* head)//deleting after program ends
 {
     if(head==nullptr)
@@ -192,7 +295,6 @@ int main()
 {
     trie *head=nullptr;
     head=CreateNode();
-    trie *t;
     read_from_file(head);
     firstPage(head);
     deleteTrie(head);

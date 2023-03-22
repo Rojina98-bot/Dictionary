@@ -3,8 +3,10 @@ pair<vector<string>, vector<string>> searchPrefix(trie *head,string key);
 trie* CreateNode();
 void add_to_file(string word,string meaning,string pos1);
 trie* insert(trie* head,string str);
-trie *search(trie *head,string str);
+//trie *search(trie *head,string str);
 void replace(trie *head,string word,string meaning,string pos1);
+string random(trie *head);
+bool levenshtein(trie *head,string key);
 bool alreadyThere(string key)//to check whether word already exists or not
 {
     string line,word;
@@ -63,7 +65,7 @@ void insertDesign(trie *head)//inserting word
     trie *t=CreateNode();
     system("cls");
     string word,meaning,pos1;
-    char choice,input;
+    char input;
     cout<<"######################"<<"\t\t ?:new key  |  b:main page"<<endl;
     cout<<"\tWORD"<<endl;
     cout<<"######################"<<"\t\t\t enter everthing in lower alphabet and no symbols"<<endl<<endl;
@@ -131,14 +133,77 @@ void searchWord(trie *head)
     cout<<"\t\t(  )\tenter the key"<<endl;
     cout<<"\t\t / ###########################"<<"\t\t\t enter everthing in lower alphabet and no symbols"<<endl;
     cin>>str;
-    t=search(head,str);
-    if(t==NULL)
+
+    
+    if(head==nullptr)
     {
+        cerr<<"failed to allocate memory for head";
+    }
+    trie *curr=head;
+    char c;
+    for(int i=0;i<str.length();i++)
+    {
+        c=str[i];
+        curr=curr->children[c-'a'];
+        if(curr==NULL)
+        {
+            //cout<<"error, no such word";//check for error input
+            bool ans=levenshtein(head,str);
+            if(ans==false)
+            {
+                cout<<endl;
+                cout<<"?\b\b\b\b?:new key  |  b:main page"<<endl;
+                return;
+            }
+            cout<<endl<<endl;
+            cout<<"\t\tIS ABOVE WORDS YOUR LOOKING FOR\t\t y:yes|| n:no"<<endl;
+            cin>>choice;
+            if(choice=='y')
+            {
+                cout<<"\t\tpress ? and enter the correct word"<<endl;
+            }
+            else if(choice=='n')
+            {
+                cout<<"\t\tThe word doesnot exist"<<endl;
+                cout<<endl;
+                cout<<"?\b\b\b\b?:new key  |  b:main page"<<endl;
+            }
+            return;
+
+        }
+    }
+
+    //search(head,str);
+    if(!curr->isLeaf)
+    {
+        //return;
+        bool ans=levenshtein(head,str);
+        if(ans==false)
+            {
+                cout<<endl;
+                cout<<"?\b\b\b\b?:new key  |  b:main page"<<endl;
+                return;
+            }
+        cout<<endl<<endl;
+        cout<<"\t\t IF ABOVE WORDS YOUR LOOKING FOR\t\t y:yes|| n:no"<<endl;
+        cin>>choice;
+        if(choice=='y')
+        {
+            cout<<"\t\tpress ? and enter the correct word"<<endl;
+        }
+        else if(choice=='n')
+        {
+            cout<<"\t\tThe word doesnot exist"<<endl;
+            cout<<endl;
+            cout<<"?\b\b\b\b?:new key  |  b:main page"<<endl;
+        }
         return;
+
     }
     cout<<endl;
     cout<<"WORD:\t\t MEANING:"<<endl;
-    cout<<t->word<<"\t\t"<<t->meaning<<endl;
+    //cout<<t->word<<"\t\t"<<t->meaning<<endl;
+    cout<<curr->word<<"\t\t"<<curr->meaning<<endl;
     cout<<endl;
     cout<<"?\b\b\b\b?:new key  |  b:main page"<<endl;
 }
@@ -157,7 +222,10 @@ char coverPage()
     cout<<"\t\t |\t\t 'i' for insert\t\t     |"<<endl;
     cout<<"\t\t *********************************************"<<endl;
     cout<<"\t\t *********************************************"<<endl;
-    cout<<"\t\t |\t\t 'w' for word\t\t     |"<<endl;
+    cout<<"\t\t |\t\t 'w' for search for word     |"<<endl;
+    cout<<"\t\t *********************************************"<<endl;
+    cout<<"\t\t *********************************************"<<endl;
+    cout<<"\t\t |\t\t 'd' for word of the day     |"<<endl;
     cout<<"\t\t *********************************************"<<endl;
     cout<<"\t\t *********************************************"<<endl;
     cout<<"\t\t |\t\t'e' for exit \t\t     |"<<endl;
@@ -240,11 +308,24 @@ void firstPage(trie *head)
             }
             break;
         }
+        case 'd':
+        {
+            system("cls");
+            string word=random(head);
+            cout<<"||||||||||||||||||||||||||||||"<<endl;
+            cout<<"\tword of the day is:"<<endl;
+            cout<<"||||||||||||||||||||||||||||||"<<endl<<endl;
+            cout<<word<<endl<<endl;
+            cout<<"press b:main page"<<endl;
+            cin>>choice;
+            break;
+
+        }
 
         default:
         {
-        cout<<"invalid";
-        break;
+            cout<<"invalid";
+            break;
         }
         
     }
