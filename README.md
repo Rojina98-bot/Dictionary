@@ -18,7 +18,9 @@ to run this code:
 
 1. need to have gcc compiler in the system
 2. run this in the terminal:
+
 *g++ insert.cpp design.cpp -o myprogram*
+
 *./myprogram*
 
 
