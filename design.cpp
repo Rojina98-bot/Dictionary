@@ -3,7 +3,6 @@ pair<vector<string>, vector<string>> searchPrefix(trie *head,string key);
 trie* CreateNode();
 void add_to_file(string word,string meaning,string pos1);
 trie* insert(trie* head,string str);
-//trie *search(trie *head,string str);
 void replace(trie *head,string word,string meaning,string pos1);
 string random(trie *head);
 bool levenshtein(trie *head,string key);
@@ -34,7 +33,7 @@ bool alreadyThere(string key)//to check whether word already exists or not
 }
 void preSearch(trie *head)//prefix search
 {
-    system("cls");
+    system("clear");// system("cls");
     string key;
     vector<string>result_word;
     vector<string>result_meaning;
@@ -63,7 +62,7 @@ void insertDesign(trie *head)//inserting word
     bool ans;
     string new_meaning, new_pos;
     trie *t=CreateNode();
-    system("cls");
+    system("clear");// system("cls");
     string word,meaning,pos1;
     char input;
     cout<<"######################"<<"\t\t ?:new key  |  b:main page"<<endl;
@@ -90,6 +89,7 @@ void insertDesign(trie *head)//inserting word
             cout<<endl<<"meaning:"<<endl;
             cin.ignore();
             getline(cin,new_meaning);
+            cout<<"noun=n\t adverb=ad\t verb=v\t adjective=adj\t preposition=prep\t conjunction=conj\t pronoun=pron"<<endl;
             cout<<endl<<"part of speech"<<endl;
             cin>>new_pos;
             replace(head,word,new_meaning,new_pos);
@@ -111,6 +111,7 @@ void insertDesign(trie *head)//inserting word
     cout<<"######################"<<endl<<endl;
     getline(cin,meaning);
     cout<<endl<<endl;
+    cout<<"noun=n\t adverb=ad\t verb=v\t adjective=adj\t preposition=prep\t conjunction=conj\t pronoun=pron"<<endl;
     cout<<"######################"<<endl;
     cout<<" part of speech "<<endl;
     cout<<"######################"<<endl<<endl;
@@ -125,7 +126,7 @@ void insertDesign(trie *head)//inserting word
 }
 void searchWord(trie *head)
 {
-    system("cls");
+    system("clear");// system("cls");
     trie *t;
     string str;
     char choice;
@@ -147,7 +148,6 @@ void searchWord(trie *head)
         curr=curr->children[c-'a'];
         if(curr==NULL)
         {
-            //cout<<"error, no such word";//check for error input
             bool ans=levenshtein(head,str);
             if(ans==false)
             {
@@ -173,10 +173,10 @@ void searchWord(trie *head)
         }
     }
 
-    //search(head,str);
+   
     if(!curr->isLeaf)
     {
-        //return;
+       
         bool ans=levenshtein(head,str);
         if(ans==false)
             {
@@ -202,7 +202,6 @@ void searchWord(trie *head)
     }
     cout<<endl;
     cout<<"WORD:\t\t MEANING:"<<endl;
-    //cout<<t->word<<"\t\t"<<t->meaning<<endl;
     cout<<curr->word<<"\t\t"<<curr->meaning<<endl;
     cout<<endl;
     cout<<"?\b\b\b\b?:new key  |  b:main page"<<endl;
@@ -210,7 +209,7 @@ void searchWord(trie *head)
 char coverPage()
 {
     char userInput;
-    system("cls");
+    system("clear");// system("cls");
     cout << "\033[32m"; // Set text color to green
     cout<<"\t\t\t\t++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"<<endl;
     cout<<" \t\t\t\t\t\tOXFORD DICTIONARY "<<endl;
@@ -247,7 +246,7 @@ void firstPage(trie *head)
     
         case 's':
         { 
-            system("cls");
+            system("clear");// system("cls");
             preSearch(head);
             cin>>choice;
             while(choice!='b')
@@ -268,7 +267,7 @@ void firstPage(trie *head)
         }
         case 'i':
         {
-            system("cls");
+            system("clear");// system("cls");
             insertDesign(head);
             cin>>choice;
             while(choice!='b')
@@ -290,7 +289,7 @@ void firstPage(trie *head)
         }
         case 'w':
         {
-            system("cls");
+            system("clear");// system("cls");
             searchWord(head);
             cin>>choice;
             while(choice!='b')
@@ -310,7 +309,7 @@ void firstPage(trie *head)
         }
         case 'd':
         {
-            system("cls");
+            system("clear");// system("cls");
             string word=random(head);
             cout<<"||||||||||||||||||||||||||||||"<<endl;
             cout<<"\tword of the day is:"<<endl;

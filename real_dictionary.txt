@@ -1140,3 +1140,8 @@ affect - v. to produce an effect on; to influence
 draft - n. a written order to pay a specified sum
 tumour - n. a swelling of any kind
 cliche - n. a stereotype or electrotype
+zombie - n. a frightening creature that is a dead person who has been brought back to life, but without human qualities
+jewellery - n. personal ornaments that are typically made from jewels and precious metal
+dazzle - n. brightness that blinds someone temporarily.
+janitor - n. a person employed to look after a building.
+ram - n. an uncastrated male sheep
